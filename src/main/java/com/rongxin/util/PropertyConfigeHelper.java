@@ -14,7 +14,7 @@ public class PropertyConfigeHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(PropertyConfigeHelper.class);
 
-    private static final String PROPERTY_CLASSPATH = "/wmrpc_remoting.properties";
+    private static final String PROPERTY_CLASSPATH = "/rongxinrpc_remoting.properties";
     private static final Properties properties = new Properties();
 
     /**
@@ -46,7 +46,7 @@ public class PropertyConfigeHelper {
         try {
             is = PropertyConfigeHelper.class.getResourceAsStream(PROPERTY_CLASSPATH);
             if (null == is) {
-                throw new IllegalStateException("wmrpc_remoting.properties can not found in the classpath.");
+                throw new IllegalStateException("rongxinrpc_remoting.properties can not found in the classpath.");
             }
             properties.load(is);
 

@@ -14,7 +14,7 @@ public class MainClient {
     public static void main(String[] args) throws Exception {
 
         //引入远程服务
-        final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("WmRpcDemo-client.xml");
+        final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("rongxinRpcDemo-client.xml");
 
         long count = 10L;
 

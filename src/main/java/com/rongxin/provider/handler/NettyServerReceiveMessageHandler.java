@@ -25,7 +25,7 @@ public class NettyServerReceiveMessageHandler extends SimpleChannelInboundHandle
     protected static final ExecutorService SHARED_EXECUTOR = new ThreadPoolExecutor(200, 200, 0, TimeUnit.SECONDS, new SynchronousQueue<>(), new NamedThreadFactory("WM-RpcDemo-Business-POOL"));
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    public void channelRmeadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
     }
 
