@@ -64,7 +64,7 @@ private int workerThreads = 10;
 
 #### 1.1 远程服务的发布流程
 
-详细请看[源代码](.\src\main\java\com\rongxin\provider\ProviderFactoryBean.java)
+详细请看[源代码](https://github.com/zrx318/myRPC-Java-Demo/blob/master/src/main/java/com/rongxin/provider/ProviderFactoryBean.java)
 
 1. 启动Netty服务端
 2. 启动ZooKeeper，将服务提供者属性信息注册到注册中心
