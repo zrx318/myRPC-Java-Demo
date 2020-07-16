@@ -120,6 +120,20 @@ public class InvokerFactoryBean implements FactoryBean, InitializingBean
 
 说道XML配置，如果通过Spring本身的配置bean标签的方式呢，就太难受了，比如我要配置一个HelloService，我上面我刚刚列出的那么多属性要一个一个的配置`property`标签，冗长又难受，反正学习Spring，那我倒不如再来个定制版的XML标签，请看我是怎么实现的
 
+### 3. 服务注册中心的实现
+
+类签名：```public class RegisterCenter implements IRegisterCenter4Invoker, IRegisterCenter4Provider, IRegisterCenter4Governance {```}
+
+说白了就是要实现1、2中调用的注册中心来注册服务和发现服务的功能嘛，所以就实现了服务提供者和发现者两个接口。那下面来看究竟是怎么**发现**和**注册**的。
+
+#### 3.1 流程解析
+
+1. 首先从`properties`文件获取ZooKeeper配置信息，依次为主机地址列表ZK_SERVICE、会话超时时间`ZK_SESSION_TIME_OUT`、连接超时时间`ZK_CONNECTION_TIME_OUT`
+2. 方法`registerProvider()`完成服务提供者信息注册服务中心功能。注册的时候要对`RegisterCenter.class`加锁，防止重复注册。服务提供者为一个Map，key是服务提供接口，value是服务方法列表。连接上ZK后，创建临时节点，服务注册就算完成了~~
+3. 服务发现很简单，直接监听节点路径即可，一旦节点有变化，将自动更新本地服务提供者缓存信息。
+
+
+
 ## 二、在Spring中定制我自己的XML标签
 
 ​	我先说下我是这么几步来定义的吧：
@@ -190,4 +204,28 @@ public class InvokerFactoryBean implements FactoryBean, InitializingBean
 今天是2020年7月12日23:55:27，下次继续努力~
 
 ---
+
+
+
+
+
+## 三、底层通信实现
+
+先介绍我了解的几种IO模型：
+
+- **阻塞IO**：默认情况下，所有文件操作都是阻塞的。在进程空间中调用recvfrom，其系统调用直到数据包到达且被复制到应用进程的缓冲区中或者发生错误才返回，这个期间会一直等待，进程调用recvfrom开始到它返回的整段时间内都是被阻塞的，如下图：
+
+<img src="./src/main/resources/picture/阻塞IO.png"  style="zoom:100%;" />
+
+- **非阻塞IO**：当内核没有准备好数据时，直接返回一个错误，所以不会等待数据完成。调用方的话可以通过反复调用recvfrom等到返回成功标志。
+
+<img src="./src/main/resources/picture/非阻塞IO.png"  style="zoom:100%;" />
+
+- **IO复用**：Linux提供select/poll，进程通过将一个或多个fd传递给select或poll系统调用，**阻塞**在select。然后select/poll就可以去轮询进程传递的fd，查看fd是否就绪。linux还提供一个epoll，是基于事件驱动的，意思就是当有fd准备就绪时，立即回调函数rollback
+
+### 
+
+
+
+
 
